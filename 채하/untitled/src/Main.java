@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -9,7 +8,7 @@ public class Main {
     	boolean loop = true;
     	while(loop) {
     		
-    		g.start();
+    		g.startGame();
     		System.out.print("Try Arain? (Y/N):");
         	if(sc.next().equals("N")) {
         		loop = false;
@@ -19,4 +18,3 @@ public class Main {
     	
     }
 }
-
