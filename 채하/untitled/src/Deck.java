@@ -1,33 +1,41 @@
+
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Deck {
-    public ArrayList<Card> CardDeck;
+    public ArrayList<Card> CardDeck = new ArrayList();
 
-    public Deck(){
-    	CardDeck = new ArrayList<Card>();
-        String[] Mark = {"♠","♣","♥","◆"};
-        for (String M : Mark){
-            for(int j = 1; 13 > j; j++){
-                CardDeck.add(new Card(M,j));
-          }
-         }
+    public Deck() {
+        String[] Mark = new String[]{"♠", "♣", "♥", "◆"};
+        String[] var2 = Mark;
+        int var3 = Mark.length;
+
+        for(int var4 = 0; var4 < var3; ++var4) {
+            String M = var2[var4];
+
+            for(int j = 1; 13 > j; ++j) {
+                this.CardDeck.add(new Card(M, j));
+            }
+        }
+
     }
-    
-    public Card Open(){
-        Card Opencard = CardDeck.get(0);
-        CardDeck.remove(0);
+
+    public Card Open() throws NullPointerException {
+        Card Opencard = (Card)this.CardDeck.get(0);
+        this.CardDeck.remove(0);
         return Opencard;
     }
 
-    public void Shuffle(){
-        ArrayList<Card> ShffleDeck = new ArrayList<Card>();
+    public void Shuffle() {
+        ArrayList<Card> ShffleDeck = new ArrayList();
         Random random = new Random();
-        for (int i = 0; CardDeck.size() > i; i++){
-            int index = random.nextInt(CardDeck.size()-1);
-            ShffleDeck.add(CardDeck.get(index));
-            CardDeck.remove(index);
+
+        for(int i = 0; this.CardDeck.size() > i; ++i) {
+            int index = random.nextInt(this.CardDeck.size() - 1);
+            ShffleDeck.add((Card)this.CardDeck.get(index));
+            this.CardDeck.remove(index);
         }
-        CardDeck = ShffleDeck;
+
+        this.CardDeck = ShffleDeck;
     }
 }
