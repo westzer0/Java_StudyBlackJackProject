@@ -49,17 +49,12 @@ public class Main {
 
         for (String card : hand) {
             String rank = card.split("\\(")[0];
-
             if (rank.equals("A")) {
                 score += 11;
                 numAces++;
-            }
-
-            else if (rank.equals("K") || rank.equals("Q") || rank.equals("J")) {
+            } else if (rank.equals("K") || rank.equals("Q") || rank.equals("J")) {
                 score += 10;
-            }
-
-            else {
+            } else {
                 score += Integer.parseInt(rank);
             }
         }
@@ -103,24 +98,64 @@ public class Main {
     }
 
     private void playerTurn() {
-
         while (true) {
             System.out.print("카드 받기(H) 또는 그만두기(S): ");
-            String choice = scanner.nextLine().trim().toLowerCase();
-            if (choice.equals("h")) {
-                playerHand.add(deck.remove(deck.size() - 1));
-                printHands(false);
+            String choice = scanner.nextLine();
 
-                if (calculateHandScore(playerHand) > TARGET_SCORE) {
-                    System.out.println("버스트! 플레이어 패배");
-                    break;
+            if (choice.equalsIgnoreCase("H")) {
+                try {
+                    playerHand.add(deck.remove(deck.size() - 1));
+                } catch (IndexOutOfBoundsException e) {
+                    System.out.println("카드가 없습니다. 게임 종료!");
+                    return;
                 }
+                int playerScore = calculateHandScore(playerHand);
+                printHands(true);
 
-            } else if (choice.equals("s")) {
+                if (playerScore > TARGET_SCORE) {
+                    System.out.println("21을 초과했습니다! 플레이어 패배!");
+                    return;
+                }
+            } else if (choice.equalsIgnoreCase("S")) {
                 break;
-
             } else {
                 System.out.println("잘못된 입력입니다. 다시 입력하세요.");
+            }
+        }
+    }
+
+    private void dealerTurn() {
+        printHands(true);
+        int dealerScore = calculateHandScore(dealerHand);
+
+        while (dealerScore < DEALER_STAND_SCORE) {
+//            덱에 카드가 없는 상태에서 플레이어나 딜러가 카드를 받으려고 할 경우 IndexOutOfBoundsException 발생
+            try {
+                dealerHand.add(deck.remove(deck.size() - 1));
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("카드가 없습니다. 게임 종료!");
+                return;
+            }
+            dealerScore = calculateHandScore(dealerHand);
+        }
+
+        System.out.println("# 딜러의 카드:");
+        for (int i = 0; i < dealerHand.size(); i++) {
+            String card = dealerHand.get(i);
+            System.out.print(card + " ");
+        }
+        System.out.println();
+
+        if (dealerScore > TARGET_SCORE) {
+            System.out.println("21을 초과했습니다! 딜러 패배!");
+        } else {
+            int playerScore = calculateHandScore(playerHand);
+            if (playerScore > dealerScore) {
+                System.out.println("플레이어 승리!");
+            } else if (playerScore < dealerScore) {
+                System.out.println("딜러 승리!");
+            } else {
+                System.out.println("무승부!");
             }
         }
     }
@@ -129,50 +164,14 @@ public class Main {
         shuffleDeck();
         dealInitialCards();
         printHands(false);
-        playerTurn();
 
+        playerTurn();
         if (calculateHandScore(playerHand) <= TARGET_SCORE) {
             dealerTurn();
         }
-        determineWinner();
-    }
 
-    private void dealerTurn() {
-        System.out.println("# 딜러의 턴");
-        printHands(true);
-        while (calculateHandScore(dealerHand) < DEALER_STAND_SCORE) {
-            dealerHand.add(deck.remove(deck.size() - 1));
-            printHands(true);
-        }
-
-        if (calculateHandScore(dealerHand) > TARGET_SCORE) {
-            System.out.println("딜러 버스트! 플레이어 승리");
-        }
-    }
-
-    private void determineWinner() {
-        int playerScore = calculateHandScore(playerHand);
-        int dealerScore = calculateHandScore(dealerHand);
-
-        System.out.println("# 결과");
-        System.out.println("플레이어 점수: " + playerScore);
-        System.out.println("딜러 점수: " + dealerScore);
-
-        if (playerScore > TARGET_SCORE) {
-            System.out.println("플레이어 버스트! 딜러 승리");
-
-        } else if (dealerScore > TARGET_SCORE) {
-            System.out.println("딜러 버스트! 플레이어 승리");
-
-        } else if (playerScore > dealerScore) {
-            System.out.println("플레이어 승리");
-
-        } else if (playerScore < dealerScore) {
-            System.out.println("플레이어 승리");
-
-        } else {
-            System.out.println("플레이어 승리");
-        }
+        System.out.println("게임 종료");
+        scanner.close();
     }
 
     public static void main(String[] args) {
