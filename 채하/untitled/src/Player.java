@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
-public class Player implements IPlayer{
+public class Player implements InterfaceGamer {
     public int handCount;
-    public ArrayList<Card> handDeck;
+    private ArrayList<Card> handDeck;
     public Player(){
         handDeck = new ArrayList<Card>();
     }
@@ -43,5 +43,12 @@ public class Player implements IPlayer{
     }
 
 
+    public void printPlayer(){
+        System.out.print("# Player: ");
+        for (Card cd : handDeck) {
+            cd.showCard();
+        }
+        System.out.println();
+    }
 
 }

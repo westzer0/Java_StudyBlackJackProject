@@ -1,9 +1,13 @@
+//
+// Source code recreated from a .class file by IntelliJ IDEA
+// (powered by FernFlower decompiler)
+//
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class Deck {
-    public ArrayList<Card> CardDeck = new ArrayList();
+    private ArrayList<Card> CardDeck = new ArrayList();
 
     public Deck() {
         String[] Mark = new String[]{"♠", "♣", "♥", "◆"};
