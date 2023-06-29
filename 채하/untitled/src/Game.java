@@ -1,18 +1,14 @@
-
-import java.util.Iterator;
 import java.util.Scanner;
 
+
 public class Game {
-    public static Deck gameDeck;
-    public static Player player;
-    public static Dealer dealer;
-
-    public Game() {
-    }
-
-    public static void startGame() {
-        Scanner sc = new Scanner(System.in);
-        gameDeck = new Deck();
+	private Deck gameDeck;
+	private Player player;
+	private Dealer dealer;
+	
+    public void startGame() {
+    	Scanner sc = new Scanner(System.in);
+    	gameDeck = new Deck();
         gameDeck.Shuffle();
         player = new Player();
         dealer = new Dealer();
@@ -27,57 +23,45 @@ public class Game {
             }
 
             printGame(true);
+
             System.out.print("Hit or Stand? (H/S):");
+
             String input = sc.next();
-            if (!input.equals("H") && !input.equals("h")) {
-                if (input.equals("S") || input.equals("s")) {
-                    printGame(false);
-                    dealer.hit(gameDeck);
-                    if (dealer.handCount <= 21 && 21 - dealer.handCount <= 21 - player.handCount) {
-                        System.out.println("Dealer Win...");
-                        printGame(false);
-                        break;
-                    }
-
-                    System.out.println("Player Win...");
-                    printGame(false);
-                    break;
-                }
-            } else {
+            if (input.equals("H") || input.equals("h")) {
                 player.hit(gameDeck);
+            } else if (input.equals("S") || input.equals("s")) {
+                printGame(false);
+                //딜러가 17이 넘을때까지 드로우
+                dealer.hit(gameDeck);
+                //승패 결정
+                printGameResult();
+                break;
             }
         }
-
     }
 
-    public static void printGame(boolean Dhide) {
-        System.out.println("---------------------Jack's BlackJack Game---------------------");
-        System.out.print("# Dealer: ");
-        Iterator var1;
-        Card cd;
-        if (Dhide) {
-            ((Card)dealer.handDeck.get(0)).showCard();
-            System.out.println(" XX");
+    private void printGameResult(){
+        if (dealer.handCount > 21 || (21 - dealer.handCount) > (21 - player.handCount)) {
+            System.out.println("Player Win...");
+            printGame(false);
+        } else if (dealer.handCount == player.handCount) {
+            System.out.println("Tie...");
+            printGame(false);
         } else {
-            var1 = dealer.handDeck.iterator();
-
-            while(var1.hasNext()) {
-                cd = (Card)var1.next();
-                cd.showCard();
-            }
-
-            System.out.println();
+            System.out.println("Dealer Win...");
+            printGame(false);
         }
-
-        System.out.print("# Player: ");
-        var1 = player.handDeck.iterator();
-
-        while(var1.hasNext()) {
-            cd = (Card)var1.next();
-            cd.showCard();
-        }
-
-        System.out.println();
-        System.out.println("---------------------------------------------------------------");
     }
+
+        
+   private void printGame(boolean dealerHide) {
+       System.out.println("---------------------Jack's BlackJack Game---------------------");
+       dealer.printDealer(dealerHide);
+       player.printPlayer();
+       System.out.println("---------------------------------------------------------------");
+
+
+   }
+
 }
+
