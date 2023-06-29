@@ -16,13 +16,16 @@ public class Score {
         return score;
     }
 
-    public void calculateScore(List<String> cards) {
-        score = 0;
-        numAces = 0;
+    public int calculateScore(List<String> cards) {
+        if (cards.isEmpty()) {
+            throw new IllegalArgumentException("Empty card found in the list.");
+        }
+        int score = 0;
+        int numAces = 0;
 
+        // 카드를 하나씩 확인하면서 점수 계산
         for (String card : cards) {
-            String cardValue = card.substring(0, card.length() - 3);
-
+            String cardValue = card.substring(0, card.length() - 3); // 숫자 부분만 추출
             if (cardValue.equals("A")) {
                 score += 11;
                 numAces++;
@@ -33,9 +36,12 @@ public class Score {
             }
         }
 
+        // Ace 처리
         while (score > 21 && numAces > 0) {
             score -= 10;
             numAces--;
         }
+
+        return score;
     }
 }

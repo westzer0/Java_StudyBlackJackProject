@@ -1,48 +1,42 @@
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 class BlackJackGame {
     private Deck deck;
-    private List<Card> dealerCards;
-    private List<Card> playerCards;
+    private Dealer dealer;
+    private Player player;
 
     public BlackJackGame() {
         deck = new Deck();
-        dealerCards = new ArrayList<>();
-        playerCards = new ArrayList<>();
+        dealer = new Dealer();
+        player = new Player();
     }
 
     public void startGame() {
-        dealerCards.add(deck.drawCard());
-        dealerCards.add(deck.drawCard());
-        playerCards.add(deck.drawCard());
-        playerCards.add(deck.drawCard());
+        dealer.addCard(deck.drawCard());
+        dealer.addCard(deck.drawCard());
+        player.addCard(deck.drawCard());
+        player.addCard(deck.drawCard());
 
         boolean gameOver = false;
 
         while (!gameOver) {
-            System.out.println("Dealer: " + dealerCards.get(0) + " XX");
-            System.out.print("Player: ");
-            for (Card card : playerCards) {
-                System.out.print(card + " ");
-            }
-            System.out.println();
+            System.out.println("Dealer: " + dealer.getVisibleCard() + " XX");
+            System.out.println("Player: " + player.getHand());
 
             String choice = getPlayerChoice();
             if (choice.equalsIgnoreCase("H")) { // Hit
-                playerCards.add(deck.drawCard());
-                if (calculateScore(playerCards) > 21) {
+                player.addCard(deck.drawCard());
+                if (player.calculateScore() > 21) {
                     gameOver = true;
-                    System.out.println("Player Busted. Dealer Wins...");
                     revealCards();
+                    System.out.println("Player Busted. Dealer Wins...");
                 }
             } else if (choice.equalsIgnoreCase("S")) { // Stand
                 gameOver = true;
                 revealCards();
 
-                int dealerScore = calculateScore(dealerCards);
-                int playerScore = calculateScore(playerCards);
+                int dealerScore = dealer.calculateScore();
+                int playerScore = player.calculateScore();
 
                 if (dealerScore > 21) {
                     System.out.println("Dealer Busted. Player Wins!");
@@ -58,16 +52,8 @@ class BlackJackGame {
     }
 
     private void revealCards() {
-        System.out.print("Dealer: ");
-        for (Card card : dealerCards) {
-            System.out.print(card + " ");
-        }
-        System.out.println();
-        System.out.print("Player: ");
-        for (Card card : playerCards) {
-            System.out.print(card + " ");
-        }
-        System.out.println();
+        System.out.println("Dealer: " + dealer.getHand());
+        System.out.println("Player: " + player.getHand());
     }
 
     private String getPlayerChoice() {
@@ -87,24 +73,5 @@ class BlackJackGame {
         }
 
         return choice;
-    }
-
-    private int calculateScore(List<Card> cards) {
-        int score = 0;
-        int aceCount = 0;
-
-        for (Card card : cards) {
-            score += card.getValue();
-            if (card.getValue() == 1) {
-                aceCount++;
-            }
-        }
-
-        while (score < 21 && aceCount > 0) {
-            score += 10;
-            aceCount--;
-        }
-
-        return score;
     }
 }
