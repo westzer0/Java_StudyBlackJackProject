@@ -2,7 +2,8 @@ package org.example;
 
 public class Main {
     public static void main(String[] args) {
-        Game game = new Game();
-        game.runGame();
+        BlackjackGame blackjackGame = new BlackjackGame();
+        Player player = new Player();
+        blackjackGame.runGame(player);
     }
 }

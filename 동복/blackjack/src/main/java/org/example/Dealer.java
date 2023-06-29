@@ -4,29 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Dealer implements Gamer{
-
+    private static final int SCORE_OF_ACE = 10;
+    private static final int DEALER_DRAW_MAX_SCORE = 16;
     private List<Card> cards = new ArrayList<>();
     private int score = 0;
-    private int getMinusA = 0;
+    private int numberOfMinus = 0;
 
     public int getScore() {
         return score;
     }
 
-    @Override
-    public void draw(Deck deck) {
+    private Card draw(Deck deck) {
         Card card = deck.draw();
         cards.add(card);
-        plusScore(card.getDenomination().getScore());
+        return card;
     }
 
     @Override
-    public void plusScore(int score){
+    public void hit(Deck deck){
+        Card card = draw(deck);
+        plusScore(card.getDenomination().getScore());
+    }
+
+    private void plusScore(int score){
         this.score += score;
         if(this.score > 21){
-            if(getANumber() > getMinusA){
-                this.score -= 10;
-                getMinusA++;
+            if(getNumberOfACE() > numberOfMinus){
+                this.score -= SCORE_OF_ACE;
+                numberOfMinus++;
             }
         }
 
@@ -47,8 +52,7 @@ public class Dealer implements Gamer{
         System.out.println();
     }
 
-    @Override
-    public int getANumber(){
+    private int getNumberOfACE(){
 
         int number = 0;
 
@@ -60,9 +64,9 @@ public class Dealer implements Gamer{
         return number;
     }
 
-    public void drawCardWhileEnd(Deck deck){
-        while(this.score < 17){
-            draw(deck);
+    public void hitUpTo17Score(Deck deck){
+        while(this.score <= DEALER_DRAW_MAX_SCORE){
+            hit(deck);
         }
     }
 }
