@@ -1,8 +1,8 @@
 import java.util.ArrayList;
 
-public class Dealer implements IPlayer{
+public class Dealer implements InterfaceGamer {
     public int handCount;
-    public ArrayList<Card> handDeck;
+    private ArrayList<Card> handDeck;
     public Dealer(){
         handDeck = new ArrayList<Card>();
         handCount = 0;
@@ -42,11 +42,22 @@ public class Dealer implements IPlayer{
     public void hit(Deck gameDeck) {
         while(handCount< 17) {
             draw(gameDeck, 1);
-            Game.printGame(false);
         }
     }
 
-
+    public void printDealer(boolean dealerHide){
+        System.out.print("# Dealer: ");
+        if(dealerHide) {
+            handDeck.get(0).showCard();
+            System.out.println(" XX");
+        }
+        else {
+            for (Card cd : handDeck) {
+                cd.showCard();
+            }
+            System.out.println();
+        }
+    }
 
 
 }
