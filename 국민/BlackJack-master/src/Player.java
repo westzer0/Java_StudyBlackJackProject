@@ -2,11 +2,11 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class Player implements IPerson {
+public class Player implements Person {
     public int sum;
 
     Map<String, Integer> cards;
-    public Player(){
+    protected Player(){
         cards = new HashMap<>();
     }
 
@@ -22,12 +22,10 @@ public class Player implements IPerson {
                     cards.put(value,1);
                     cal_sum -= 10;
                     break;
-
                 }
             }
         }
         return cal_sum;
-
     }
 
     // 카드의 값에 따라 숫자로 변환하여 반환하는 메소드

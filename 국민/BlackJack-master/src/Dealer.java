@@ -3,12 +3,12 @@ import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Dealer implements IPerson{
+public class Dealer implements Person {
     int sum;
-    Map<String, Integer> cards;
-    Map.Entry<String, Integer> secretCard;
+    protected Map<String, Integer> cards;
+    protected Map.Entry<String, Integer> secretCard;
 
-    public Dealer() {
+    protected Dealer() {
         cards = new HashMap<>();
     } /////리스트에 저장말고 맵에 키 밸류로 저장하기
 
@@ -51,7 +51,6 @@ public class Dealer implements IPerson{
         String card = deck.pop();
         this.cards.put(card, getValue(card));
     }
-
     public void secretPut(Deck deck){
         this.cards.put("XX",null);
         String card = deck.pop();

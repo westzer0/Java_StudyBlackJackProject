@@ -2,19 +2,19 @@ import java.util.Stack;
 import java.util.Collections;
 
 public class Deck {
-    static String Clover = "(♣)";
-    static String Dia = "(♦)";
-    static String Heart = "(♥)";
-    static String Spade = "(♠)";
+    private static final String Clover = "(♣)";
+    private static final String Dia = "(♦)";
+    private static final String Heart = "(♥)";
+    private static final String Spade = "(♠)";
 
     private Stack<String> cards;
 
-    public Deck(){
+    protected Deck(){
         cards = new Stack<>();
         init();
     }
 
-    public void init(){
+    private void init(){
         String[] suits = {Clover, Dia, Heart, Spade};
         String[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
 
@@ -26,7 +26,7 @@ public class Deck {
         shuffle();
     }
 
-    public void shuffle() {
+    private void shuffle() {
         Collections.shuffle(cards);
     }
 
@@ -42,7 +42,6 @@ public class Deck {
     }
 
     public String pop(){
-
         return cards.pop();
     }
 }

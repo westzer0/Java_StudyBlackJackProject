@@ -1,7 +1,6 @@
 public class Card {
     public int number;
     private String mark;
-
     public Card(String inputMark, int inputNumber){
         mark = inputMark;
         number = inputNumber;
