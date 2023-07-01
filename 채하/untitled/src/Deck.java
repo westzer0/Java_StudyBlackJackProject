@@ -24,7 +24,7 @@ public class Deck {
 
     }
 
-    public Card Open() throws NullPointerException {
+    public Card Open() throws IllegalArgumentException {
         Card Opencard = (Card)this.CardDeck.get(0);
         this.CardDeck.remove(0);
         return Opencard;

@@ -32,7 +32,7 @@ public class Player implements InterfaceGamer {
             for (int i = 0; i < num; i++) {
                 this.handDeck.add(gameDeck.Open());
             }
-        }catch (NullPointerException e){
+        }catch (IllegalArgumentException e){
             System.out.println("덱에 카드가 없습니다.");
         }
         sumHand();
